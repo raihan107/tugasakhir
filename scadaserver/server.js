@@ -4,16 +4,16 @@ const fs = require('fs');
 const path = require('path');
 
 // Koneksi ke broker MQTT
-const client = mqtt.connect('mqtt://172.31.242.103:1883');
+const client = mqtt.connect('mqtt://:1883');
 
-const mqttSensorClient = mqtt.connect('mqtt://10.145.28.49:1883');
+const mqttSensorClient = mqtt.connect('mqtt://:1883');
 
 // Koneksi ke database MySQL
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'mysql',
-  user: process.env.DB_USER || 'root',             // username MySQL
-  password: process.env.DB_PASSWORD || 'distribusi', // password MySQL
-  database: process.env.DB_NAME || 'distribusi_db', // nama database
+  host: process.env.DB_HOST || '',
+  user: process.env.DB_USER || '',             // username MySQL
+  password: process.env.DB_PASSWORD || '', // password MySQL
+  database: process.env.DB_NAME || '', // nama database
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
