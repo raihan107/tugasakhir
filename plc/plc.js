@@ -4,7 +4,7 @@ const path = require('path');
 
 // Koneksi TCP ke ESP32
 const client = new net.Socket();
-const ESP32_IP = process.env.ESP32_IP || '192.168.1.22';   // default jika ENV tidak diset
+const ESP32_IP = process.env.ESP32_IP || '';   // default jika ENV tidak diset
 const ESP32_PORT = process.env.ESP32_PORT || 502;
 
 // Membaca file plc.json
