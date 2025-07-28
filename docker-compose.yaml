@@ -8,7 +8,7 @@ services:
     volumes:
       - ./plc:/plc
     environment:
-      - ESP32_IP=10.145.28.222
+      - ESP32_IP=
       - ESP32_PORT=502
     networks:
       - scada-network
@@ -25,12 +25,12 @@ services:
       - ./hyperledger-gateway:/hyperledger-gateway
       - ./plc:/plc
     environment:
-      - MQTT_BROKER=172.17.0.1
-      - MQTT_SENSOR_BROKER=10.145.28.49
-      - DB_HOST=mysql       
-      - DB_USER=root
-      - DB_PASSWORD=distribusi
-      - DB_NAME=distribusi_db
+      - MQTT_BROKER=
+      - MQTT_SENSOR_BROKER=
+      - DB_HOST=   
+      - DB_USER=
+      - DB_PASSWORD=
+      - DB_NAME=
     depends_on:
      plc:
         condition: service_healthy
@@ -61,8 +61,8 @@ services:
     container_name: mysql
     environment:
       TZ: Asia/Jakarta 
-      MYSQL_ROOT_PASSWORD: distribusi
-      MYSQL_DATABASE: distribusi_db
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
     ports:
       - "3307:3306"  
     volumes:
