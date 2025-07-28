@@ -2,8 +2,8 @@
 #include <ModbusMaster.h>
 #include <HardwareSerial.h>
 
-#define WIFI_SSID "Raihan" 
-#define WIFI_PASSWORD "77777777"
+#define WIFI_SSID "" 
+#define WIFI_PASSWORD ""
 #define SERVER_PORT 502           // Port Modbus standar
 
 #define MAX485_DE 25  // Pin D4 untuk DE (Driver Enable)
