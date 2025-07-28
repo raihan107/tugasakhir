@@ -5,10 +5,10 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>  
 
-const char* ssid = "Raihan";           
-const char* password = "77777777";     
+const char* ssid = "";           
+const char* password = "";     
 
-const char* mqttServer = "10.145.28.49"; // IP Windows
+const char* mqttServer = ""; // IP Windows
 const int mqttPort = 1883;                
 
 // Membuat objek WiFiClient dan PubSubClient
