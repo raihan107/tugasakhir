@@ -1,7 +1,7 @@
 const mqtt = require('mqtt');
 
 // Konfigurasi koneksi MQTT
-const mqttServer = 'mqtt://10.145.28.49';
+const mqttServer = 'mqtt://';
 const mqttPort = 1883;
 const client = mqtt.connect(`${mqttServer}:${mqttPort}`);
 
