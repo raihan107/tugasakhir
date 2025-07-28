@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Ledger Blockchain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #22c55e;
+      --secondary-color: #55c67e;
+      --bg-color: #f0f2f5;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --border-radius: 12px;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #779fdf, #67cd95);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+
+    h1 i {
+      margin-right: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f4f6fb;
+    }
+
+    tr:hover {
+      background-color: #eef1ff;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .button-container button {
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      color: white;
+      background-color: #3b82f6;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button {
+      background: var(--secondary-color);
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(99, 241, 168, 0.4);
+      transition: all 0.25s ease-in-out;
+    }
+
+    button i {
+      margin-right: 8px;
+    }
+
+    button:hover {
+      background: #10dc5b;
+      box-shadow: 0 6px 16px rgba(97, 218, 97, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .button-container button:hover {
+      background-color: #2563eb;
+    }
+
+    .button-container button.logout {
+      background-color: #ef4444;
+    }
+
+    @media screen and (max-width: 600px) {
+      .button-container {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .button-container button {
+        margin: 5px 0;
+        width: auto;
+      }
+
+      th, td {
+        font-size: 12px;
+        padding: 8px;
+      }
+
+      .table-wrapper {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .button-container {
+        text-align: center;
+      }
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<script>
+  function logout() {
+    window.location.href = '/login';
+  }
+</script>
+
+<body>
+  <div class="container">
+    <h1><i class="fas fa-bolt"></i> Data Terbaru Ledger Blockchain</h1>
+    <div class="table-wrapper">
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th><i class="fas fa-hashtag"></i> ID</th>
+            <th><i class="fas fa-battery-half"></i> Battery (%)</th>
+            <th><i class="fas fa-plug"></i> Load (W)</th>
+            <th><i class="fas fa-bolt-lightning"></i> Consumed (Wh)</th>
+            <th><i class="fas fa-hourglass-half"></i> Duration (menit)</th>
+            <th><i class="fas fa-clock"></i> Timestamp</th>
+            <th><i class="fas fa-solar-panel"></i> Source</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <button onclick="window.location.href='/all'">
+        <i class="fas fa-database"></i> Lihat Seluruh Data
+      </button>
+      <button onclick="logout()" class="logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+
+  <script>
+    async function loadData() {
+      const res = await fetch('/assets/plts');
+      const data = await res.json();
+      data.sort((a, b) => new Date(b.Timestamp) - new Date(a.Timestamp));
+      const latest10 = data.slice(0, 7);
+
+      const tbody = document.querySelector('tbody');
+      latest10.forEach((item, index) => {
+        const sourceIcon = item.Source.toLowerCase().includes('plts')
+          ? '<i class="fas fa-solar-panel" style="color:#f59e0b"></i>'
+          : '<i class="fas fa-bolt" style="color:#facc15"></i>';
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.ID}</td>
+            <td><i class="fas fa-battery-half" style="color:#10b981"></i> ${item.BatteryCapacity}</td>
+            <td><i class="fas fa-plug" style="color:#f43f5e"></i> ${item.LoadPower}</td>
+            <td><i class="fas fa-bolt-lightning" style="color:#3b82f6"></i> ${item.ConsumedPower}</td>
+            <td><i class="fas fa-hourglass-half" style="color:#6366f1"></i> ${item.Duration ?? '-'}</td>
+            <td><i class="fas fa-clock"></i> ${item.Timestamp}</td>
+            <td>${sourceIcon} ${item.Source}</td>
+          </tr>
+        `;
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "ujicoba",
+  "version": "1.0.0",
+  "main": "uji.js",
+  "scripts": {
+    "start": "node uji.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "mqtt": "^5.13.0"
+  }
+}

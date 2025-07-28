@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Ledger Blockchain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #4f46e5;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --border-radius: 12px;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #779fdf, #67cd95);
+      min-height: 100vh;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 40px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 25px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 12px 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:nth-child(even) {
+      background-color: #f4f6fb;
+    }
+    tr:hover {
+      background-color: #eef1ff;
+    }
+    .button-container {
+      margin-top: 25px;
+      text-align: right;
+      width: 100%;
+      max-width: 1100px;
+    }
+    button {
+      background: #625ce3;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(7, 105, 242, 0.3);
+      transition: all 0.25s ease-in-out;
+    }
+    button i {
+      margin-right: 8px;
+    }
+    button:hover {
+      background: #4f46e5;
+      box-shadow: 0 6px 16px rgba(91, 75, 197, 0.5);
+      transform: translateY(-2px);
+    }
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 0.85rem;
+        padding: 10px 6px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      button {
+        width: 100%;
+        text-align: center;
+      }
+      .button-container {
+        text-align: center;
+      }
+    }
+    .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px; /* mencegah table terlalu sempit */
+      }
+
+      th, td {
+        padding: 10px;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      @media screen and (max-width: 600px) {
+        th, td {
+          font-size: 12px;
+          padding: 8px;
+        }
+
+        .table-wrapper {
+          -webkit-overflow-scrolling: touch; /* smooth scroll untuk iOS */
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h1><i class="fas fa-database"></i> Seluruh Data Ledger Blockchain</h1>
+
+  <!-- Canvas untuk Pie Chart -->
+  <canvas id="sourceChart" style="max-width: 600px; margin: 20px auto;"></canvas>
+
+  <div class="table-wrapper">
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th><i class="fas fa-hashtag"></i> ID</th>
+          <th><i class="fas fa-battery-half"></i> Battery (%)</th>
+          <th><i class="fas fa-plug"></i> Load (W)</th>
+          <th><i class="fas fa-bolt-lightning"></i> Consumed (Wh)</th>
+          <th><i class="fas fa-hourglass-half"></i> Duration (menit)</th>
+          <th><i class="fas fa-clock"></i> Timestamp</th>
+          <th><i class="fas fa-solar-panel"></i> Source</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+  <div class="button-container">
+    <button onclick="window.location.href='/data'"><i class="fas fa-arrow-left"></i>Kembali</button>
+  </div>
+
+  <script>
+    async function loadAllData() {
+      const res = await fetch('/assets/plts');
+      const data = await res.json();
+      data.sort((a, b) => new Date(b.Timestamp) - new Date(a.Timestamp));
+
+      // Render tabel
+      const tbody = document.querySelector('tbody');
+      tbody.innerHTML = ''; // clear dulu
+      data.forEach((item, index) => {
+        const sourceIcon = item.Source.toLowerCase().includes('plts')
+          ? '<i class="fas fa-solar-panel" style="color:#f59e0b"></i>'
+          : '<i class="fas fa-bolt" style="color:#facc15"></i>';
+
+        tbody.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.ID}</td>
+            <td><i class="fas fa-battery-half" style="color:#10b981"></i> ${item.BatteryCapacity}</td>
+            <td><i class="fas fa-plug" style="color:#f43f5e"></i> ${item.LoadPower}</td>
+            <td><i class="fas fa-bolt-lightning" style="color:#3b82f6"></i> ${item.ConsumedPower}</td>
+            <td><i class="fas fa-hourglass-half" style="color:#6366f1"></i> ${item.Duration ?? '-'}</td>
+            <td><i class="fas fa-clock"></i> ${item.Timestamp}</td>
+            <td>${sourceIcon} ${item.Source}</td>
+          </tr>
+        `;
+      });
+
+      // Hitung distribusi source (PLTS vs PLN)
+      const sourceCounts = { PLTS: 0, PLN: 0, Lainnya: 0 };
+      data.forEach(item => {
+        const src = item.Source.toLowerCase();
+        if (src.includes('plts')) sourceCounts.PLTS++;
+        else if (src.includes('pln')) sourceCounts.PLN++;
+        else sourceCounts.Lainnya++;
+      });
+
+      // Render pie chart source
+      const ctx = document.getElementById('sourceChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['PLTS', 'PLN'],
+          datasets: [{
+            label: 'Distribusi Source',
+            data: [sourceCounts.PLTS, sourceCounts.PLN, sourceCounts.Lainnya],
+            backgroundColor: [
+              '#f59e0b', // kuning untuk PLTS
+              '#3b82f6', // biru untuk PLN
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: {
+              display: true,
+              text: 'Distribusi Source (PLTS & PLN)'
+            }
+          }
+        }
+      });
+    }
+
+    loadAllData();
+  </script>
+</body>
+</html>

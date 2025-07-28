@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data Ledger Blockchain</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #22c55e;
+      --background: linear-gradient(to right, #67cd95, #779fdf);
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(160, 25, 25, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://images.pexels.com/photos/23322440/pexels-photo-23322440/free-photo-of-pipa-kabel-saluran-aliran.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      font-family: sans-serif;
+      position: relative;
+    }
+
+    /* Supaya teks tetap jelas */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(18, 17, 17, 0.4);
+      z-index: 0;
+    }
+
+    /* Konten */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Ini yang penting agar semua konten di tengah horizontal */
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #welcome-message {
+    font-family: 'Segoe UI', sans-serif;
+      font-size: 2.2rem; /* lebih besar */
+      font-weight: 700;  /* lebih tebal */
+      color: #ffffff; /* putih terang */
+      text-shadow:
+        1px 1px 3px rgba(63, 62, 62, 0.6), /* lebih tebal dan dalam */
+        0 2px 4px rgba(0, 0, 0, 0.5);
+
+      width: 100%;           /* cukup pakai 100% */
+      max-width: 680px;
+      margin: 48px auto;
+      padding: 0 20px;
+      text-align: center;     /* rata tengah semua */
+      line-height: 1.2;
+      position: relative;
+      z-index: 1;
+
+    }
+
+    @media (max-width: 480px) {
+    #login-form {
+      width: 90vw;
+      padding: 30px 20px;
+    }
+
+    #welcome-message {
+      font-size: 1.5rem;
+      max-width: 90vw;
+      margin: 24px auto;
+    }
+
+    input[type=text],
+    input[type=password],
+    button {
+      font-size: 1rem;
+      padding: 10px;
+    }
+    }
+
+    @media (max-width: 768px) {
+      #login-form {
+        width: 320px;
+        padding: 35px 25px;
+      }
+
+      #welcome-message {
+        font-size: 1.8rem;
+        max-width: 90vw;
+      }
+    }
+
+    #welcome-message i {
+      color: #facc15;
+      font-size: 2.8rem;
+      animation: wave 2s infinite ease-in-out;
+      /* biar icon pas di tengah teks */
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Animasi wave icon tangan */
+    @keyframes wave {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(20deg); }
+    }
+
+    #login-form {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      padding: 40px 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 360px;
+      text-align: center;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-style: normal;
+    }
+
+    h2 i {
+      color: var(--secondary);
+      font-size: 2rem;
+    }
+
+    .icon-stack {
+      margin-bottom: 15px;
+      font-size: 2.2rem;
+      color: #3b82f6;
+    }
+
+    .icon-stack i {
+      margin: 0 6px;
+    }
+
+    input[type=text],
+    input[type=password] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--secondary);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: var(--secondary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button i {
+      margin-left: 8px;
+    }
+
+    button:hover {
+      background: #16a34a;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .error {
+      color: #dc2626;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .footer-icons {
+      margin-top: 20px;
+      color: #64748b;
+      font-size: 1.2rem;
+    }
+
+    .footer-icons i {
+      margin: 0 6px;
+    }
+    .icon-petir { color: #facc15; }
+    .icon-surya { color: #f97316; }
+    .icon-baterai { color: #22c55e; }
+    .icon-daun { color: #16a34a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="welcome-message">
+      <div class="icon-banner">
+        <i class="fas fa-hand-wave"></i>
+        <i class="fas fa-bolt"></i>
+        <i class="fas fa-network-wired"></i>
+      </div>
+      <p>
+        Selamat Datang Di
+      </p>
+      <p>
+       Data Blockchain Distribusi
+      </p>
+    </div>
+
+    <div id="login-form">
+      <div class="icon-stack">
+        <i class="fas fa-bolt-lightning icon-petir"></i>
+        <i class="fas fa-solar-panel icon-surya"></i>
+        <i class="fas fa-battery-full icon-baterai"></i>
+        <i class="fas fa-seedling icon-daun"></i>
+      </div>
+      <div id="error-msg" class="error">Wahahahahah Salahh Cuyyy</div>
+      <input type="text" id="username" placeholder="Username" autocomplete="off" />
+      <input type="password" id="password" placeholder="Password" autocomplete="off" />
+      <button onclick="checkLogin()">Masuk <i class="fas fa-arrow-right-to-bracket"></i></button>
+      <div class="footer-icons">
+        <i class="fas fa-network-wired"></i>
+        <i class="fas fa-lock"></i>
+        <i class="fas fa-database"></i>
+        <i class="fas fa-cloud"></i>
+        <i class="fas fa-circle-nodes"></i>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const USERNAME = 'distribusi';
+    const PASSWORD = 'distribusi12';
+
+    function checkLogin() {
+      const inputUser = document.getElementById('username').value.trim();
+      const inputPass = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+
+      if(inputUser === USERNAME && inputPass === PASSWORD) {
+        errorMsg.style.display = 'none';
+         window.location.href = '/data';
+      } else {
+        errorMsg.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

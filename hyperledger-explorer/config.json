@@ -1,0 +1,13 @@
+{
+	"network-configs": {
+		"pln-network": {
+			"name": "distribusi-network",
+			"profile": "./plndistribusi-network.json"
+		},
+		"plts-network": {
+			"name": "distribusi-network",
+			"profile": "./pltsdistribusi-network.json"
+		}
+	},
+	"license": "Apache-2.0"
+}

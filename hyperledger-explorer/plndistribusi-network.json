@@ -1,0 +1,59 @@
+{
+  "name": "database-distribusi",
+  "version": "1.0.0",
+  "client": {
+    "tlsEnable": true,
+    "adminCredential": {
+      "id": "distribusi",
+      "password": "distribusipln"
+    },
+    "enableAuthentication": true,
+    "organization": "Org2MSP",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        },
+        "orderer": "300"
+      }
+    }
+  },
+  "channels": {
+    "distribusi": {
+      "peers": {
+        "peer0.org2.example.com": {}
+      },
+      "connection": {
+        "timeout": {
+          "peer": {
+            "endorser": "6000",
+            "eventHub": "6000",
+            "eventReg": "6000"
+          }
+        }
+      }
+    }
+  },
+  "organizations": {
+    "Org2MSP": {
+      "mspid": "Org2MSP",
+      "adminPrivateKey": {
+        "path": "/tmp/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/cba4035239bd9864c4de899fd149d3251d0421762c51b0cc330598ac08d6b391_sk"
+      },
+      "peers": [
+        "peer0.org2.example.com"
+      ],
+      "signedCert": {
+        "path": "/tmp/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/cert.pem"
+      }
+    }
+  },
+  "peers": {
+    "peer0.org2.example.com": {
+      "tlsCACerts": {
+        "path": "/tmp/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt"
+      },
+      "url": "grpcs://peer0.org2.example.com:9051"
+    }
+  }
+}

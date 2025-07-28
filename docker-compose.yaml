@@ -1,0 +1,98 @@
+version: "3.8"
+
+services:
+  plc:
+    build: ./plc
+    container_name: plc
+    restart: unless-stopped
+    volumes:
+      - ./plc:/plc
+    environment:
+      - ESP32_IP=10.145.28.222
+      - ESP32_PORT=502
+    networks:
+      - scada-network
+    healthcheck:
+      test: ["CMD", "echo", "ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  scadaserver:
+    build: ./scadaserver
+    container_name: scadaserver
+    volumes:
+      - ./scadaserver:/app
+      - ./hyperledger-gateway:/hyperledger-gateway
+      - ./plc:/plc
+    environment:
+      - MQTT_BROKER=172.17.0.1
+      - MQTT_SENSOR_BROKER=10.145.28.49
+      - DB_HOST=mysql       
+      - DB_USER=root
+      - DB_PASSWORD=distribusi
+      - DB_NAME=distribusi_db
+    depends_on:
+     plc:
+        condition: service_healthy
+     mysql:
+        condition: service_healthy
+    networks:
+      - scada-network
+  hyperledger-gateway:
+    build: ./hyperledger-gateway
+    container_name: hyperledger-gateway
+    volumes:
+      - ./hyperledger-gateway:/app
+      - ./fabric-samples:/fabric-samples
+    working_dir: /app
+    command: npm start
+    environment:
+      - TZ=Asia/Jakarta
+    depends_on:
+      - scadaserver
+    networks:
+      - scada-network
+      - fabric_test
+    ports:
+      - "1980:1980"
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      TZ: Asia/Jakarta 
+      MYSQL_ROOT_PASSWORD: distribusi
+      MYSQL_DATABASE: distribusi_db
+    ports:
+      - "3307:3306"  
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - scada-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pdistribusi"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8888:80" 
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    depends_on:
+      - mysql
+    networks:
+      - scada-network
+
+volumes:
+  mysql-data:
+
+networks:
+  scada-network:
+    external: true
+  fabric_test:
+    external: true
